@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <!--<![endif]-->
 <head>
     <title>Hammer Time</title>
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
@@ -92,18 +95,15 @@
           height: 100%;
         }
 
-        .product-section {
-        	height:48%;
-        	width: 100%;
-        }
 
         #carousel li.pane1 { background: #70c8c7; }
-        #carousel li.pane2 { background: #4986e7; }
+        #carousel li.pane2 { background: #FFF; }
         #carousel li.pane3 { background: #d06b64; }
         #carousel li.pane4 { background: #cd74e6; }
         #carousel li.pane5 { background: #9fe1e7; }
         #carousel li.pane6 { background: #FFF; }
 
+/****** ORGANIZE INTO TARGET PAGE *******/
 
         #targets {
             position: absolute; left: 0; bottom: 0;
@@ -137,10 +137,52 @@
             text-align: center;
             font-size: 18px; font-weight: bold; line-height: 18px;
         }
+/******** PRODUCT PAGE **********/
+    	.big-product img {
+		    width:250px;
+		    margin: -50px auto 0 auto;
+		    display:block;
+		    z-index:0;
+		}
+        .product-section {
+        	height:48%;
+        	width: 100%;
+        }
+		.title {
+		    text-align:center;
+		    width: 200px;
+		    margin: -60px auto 0 auto; 
+		    display:block;
+		    z-index: 10;
+		    font-size:18px;
+		    position:relative;
+		}
+		.product-right-block {
+		    width: 15%;
+		    float:right;
+		    display:block;
+		    padding-top: 60px;
+		}
+		.product-main-block {
+		    float:left;
+		    width:70%;
+		    display:block;
+		}
+		.product-left-block {
+		    float:left;
+		    width:15%;
+		    display:block;
+		}
+		.product-right-block span {
+		    clear:both;
+		    margin-top:10px;
+		    height: 30px;
+		    display:block;
+		}
     </style>
 </head>
 
-<body>
+<body ng-app='heartApp' ng-controller='HeartController'>
 
     <!--<div id="debug">Log</div>-->
 
@@ -151,19 +193,38 @@
                 <h3>A Stella & Dot Hack Day Project</h3>
                 <p>This is a mobile optimized site, so please use swipes, taps, double taps, and pinches to explore.</p>
             </li>
-            <li class="pane2 fullimg">
-                <div class="top-product product-section">
-                    top img
-                    <!--Display Top Image-->
-                    <!--Display 3 Icons on Right -->
-                    <!--Display Product Title & Price -->
-                </div>
-                <div class="bottom-product">
-                    bottom img
-                    <!--Display Bottom Image-->
-                    <!--Display 3 Icons on Right -->
-                    <!--Display Product Title & Price -->
-                </div>
+            <li class="pane2">
+				<div id="product-holder">
+				    <div ng-repeat='item in items'>
+				    counter= {{item.count}}
+				        <div class="big-product product-section">
+				            <div class="product-left-block">&nbsp;</div>
+				            <div class="product-main-block">
+					            <div><img src="{{item.image}}" ng:click="select()" id="product-{{item.id}}" /> </div>
+					            <span class='title' ng:show='clicked' data-click="{{item.image}}">
+					                    {{item.name}}<br />
+					                    {{item.price}}
+					            </span>
+				            </div>
+				          <div class="product-right-block" ng:show='clicked'>
+				              <span class="person">
+				                  view on person
+				              </span>
+				              <span class="readmore">
+				                  read more
+				              </span>
+				              <span class="heartit">
+				                  <a ng-click="heartadd(item)">heart it</a>
+				              </span>
+				          </div>
+
+				            <div style='clear: both;'></div>
+				        </div>
+				        
+				        <div ng-show='busy'>Loading data...</div>
+				    </div>
+				{{heartcounter()}} Hearted of {{items.length}}
+				</div>
             </li>
             <li class="pane3 fullimg">
                 <h2>3 circles</h2>
@@ -181,7 +242,7 @@
     <!-- jQuery is just for the demo! Hammer.js works without jQuery :-) -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="assets/js/modernizr.js"></script>
-
+    <script src="http://code.angularjs.org/1.0.0rc9/angular-1.0.0rc9.js"></script>
     <script src="assets/js/jquery.hammer.min.js"></script>
 
     <script>
@@ -399,6 +460,102 @@
     var carousel = new Carousel("#carousel");
     carousel.init();
 
+function HeartController($scope, $http) {
+    $scope.items = [];
+    $scope.busy = false;
+    //$scope.after = '';
+    var counter = 2;
+
+    $scope.nextPage = function () {
+        for (var i = 0; i < 4; i++) {
+            $scope.items.push({
+                heart: false,
+                id: Products[i].entity_id,
+                name: Products[i].name,
+                price: Products[i].price,
+                image: Products[i].image,
+                count: counter
+            });
+            counter += 1;
+        }
+    };
+
+    $scope.select = function (item) {
+        if (this.clicked) {
+            this.clicked = false;
+        } else {
+            this.clicked = true;
+        }
+    };
+    $scope.heartadd = function (item) {
+        if (item.heart) {
+            item.heart = false;
+        } else {
+            item.heart = true;
+        }
+    }
+
+    $scope.heartcounter = function () {
+        var count = 0;
+        angular.forEach($scope.items, function (item) {
+            count += item.heart ? 1 : 0;
+        });
+        return count;
+    };
+
+
+    $scope.nextPage();
+};
+
+angular.module('heartApp', []);
+
+var Products = new Array();
+Products[0] = new Array();
+Products[0].entity_id = "4380";
+Products[0].name = "Moraley Flower Stackable Bands";
+Products[0].meta_description = "Add style with delicate mixed metal flower stackable band rings from Stella & Dot. Find fashion rings, cocktail rings, vintage rings, bands & more.";
+Products[0].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg";
+Products[0].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg";
+Products[0].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg";
+Products[0].url_key = "moraley-flower-stackable-bands";
+Products[0].url_path = "moraley-flower-stackable-bands.html";
+Products[0].price = "39.0000";
+
+Products[1] = new Array();
+Products[1].entity_id = "4378";
+Products[1].name = "Mary-Margaret Stone Ring";
+Products[1].meta_title = "Turquoise Stone & Gold Cocktail Ring | Mary-Margaret Ring";
+Products[1].meta_description = "Look stylish & on trend with a turquoise stone & gold cocktail ring from Stella & Dot. Find fashion rings, cocktail rings, vintage rings, bands & more.";
+Products[1].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg";
+Products[1].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg";
+Products[1].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg";
+Products[1].url_key = "mary-margaret-stone-ring";
+Products[1].url_path = "mary-margaret-stone-ring.html";
+Products[1].price = "39.0000";
+
+Products[2] = new Array();
+Products[2].entity_id = "608";
+Products[2].name = "Camilla Ring ";
+Products[2].meta_title = "Large Green Stone & Gold Cocktail Ring | Camilla Ring";
+Products[2].meta_description = "Shop for an aventurine stone cocktail ring in an antique gold setting from Stella & Dot. Find fashion rings, cocktail rings, vintage rings, bands & more.";
+Products[2].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg";
+Products[2].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg";
+Products[2].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg";
+Products[2].url_key = "camilla-ring";
+Products[2].url_path = "camilla-ring.html";
+Products[2].price = "49.0000";
+
+Products[3] = new Array();
+Products[3].entity_id = "2321";
+Products[3].name = "Soiree Trio Ring";
+Products[3].meta_title = "Black Diamond, Glass & Crystal Cocktail Ring | Soiree Trio Ring";
+Products[3].meta_description = "Stand out with a striking triple dome ring with mixed crystal pave balls by Stella & Dot. Find handbags, cross body bags, clutches, wristlets, pouches & more.";
+Products[3].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg";
+Products[3].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg";
+Products[3].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg";
+Products[3].url_key = "r115h";
+Products[3].url_path = "r115h.html";
+Products[3].price = "49.0000";
 
     </script>
 
