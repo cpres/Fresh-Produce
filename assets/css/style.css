@@ -147,7 +147,7 @@ html, body, #carousel, #carousel ul, #carousel li {
 
 /******** PRODUCT PAGE **********/
 .big-product img {
-    width:250px;
+    height: 100%;
     margin: -50px auto 0 auto;
     display:block;
     z-index:0;
@@ -268,3 +268,18 @@ div.display-details .product-right-block { opacity: 1; }
 }
 .counter {padding-top:25px;}
 
+
+#zoom-image {
+    position: absolute; left: 50%; top: 50%; z-index: 500;
+    height: 0; width: 0;
+    background-color: rgba(255, 255, 255, 0); background-position: center; background-size: contain; background-repeat: no-repeat;
+    opacity: 0;
+    transition: all .25s ease-in-out;
+    -moz-transition: all .25s ease-in-out;
+    -webkit-transition: all .25s ease-in-out;
+}
+#zoom-image.zoomed {
+    left: 0; top: 0;
+    height: 100%; width: 100%;
+    opacity: 1;
+}

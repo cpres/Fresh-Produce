@@ -301,8 +301,26 @@ $(function() {
     });
 
     // image click
-    $carousel.delegate("img.product-image", "click", function() {
+    /*$carousel.delegate("img.product-image", "click", function() {
         $(this).closest(".product-section").toggleClass("display-details");
+    });*/
+    $carousel.delegate("img.product-image", "click", function() {
+        var $image = $('<div id="zoom-image"></div>');
+        $image.css("background-image", 'url(' + $(this).attr("src") + ')');
+
+        $image.appendTo("body");
+        window.setTimeout(function() {
+            $image.addClass("zoomed");
+        }, 10);
+
+    });
+
+    // image zoome out
+    $("body").delegate("#zoom-image", "click", function() {
+        var $image = $(this).removeClass("zoomed");
+        window.setTimeout(function() {
+            $image.remove();
+        }, 250);
     });
 
     // heart icon click
@@ -316,8 +334,10 @@ $(function() {
         var heartCount = count+1; // hard coded temporarily for example
 
         // update heart count els
-        $(".heart-count span").eq(0).html(heartCount);
+        $(".heart-count span:first-of-type").html(heartCount);
     });
+
+    // image zoom out
 });
 /***** Organizer Section ******/
 $(".drag")
