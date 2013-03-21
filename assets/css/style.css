@@ -1,3 +1,15 @@
+@font-face {
+    font-family: 'heydings';
+    src: url('../fonts/heydings_icons.eot');
+    src: url('../fonts/heydings_icons.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/heydings_icons.woff') format('woff'),
+         url('../fonts/heydings_icons.ttf') format('truetype'),
+         url('../fonts/heydings_icons.svg#heydings_iconsregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 html, body, #carousel, #carousel ul, #carousel li {
     min-height: 100%;
     height: 100%;
@@ -145,28 +157,63 @@ html, body, #carousel, #carousel ul, #carousel li {
     width: 100%;
 }
 .title {
+    display: block; opacity: 0;
     text-align:center;
     width: 200px;
     margin: -60px auto 0 auto;
-    display:none;
     z-index: 10;
     font-size:18px;
     position:relative;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
 }
+div.display-details .title { opacity: 1; }
 .product-right-block {
+    display: block; opacity: 0;
     width: 15%;
     float:right;
-    display:block;
     padding-top: 60px;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
 }
+div.display-details .product-right-block { opacity: 1; }
 .product-main-block {
     float:left;
     width:70%; margin-left: 15%;
     display:block;
 }
 .product-right-block span {
-    clear:both;
+    position: relative;
     margin-top:10px;
-    height: 30px;
+    width: 30px; height: 30px;
     display:block;
+    text-indent: -999em;
 }
+.product-right-block span:first-child {
+    margin-top: 0;
+}
+.product-right-block span:after {
+    position: absolute; left: 0; top: 0;
+    width: 30px; height: 30px;
+    font-family: "heydings"; font-size: 30px; text-indent: 0; color: #63ceca;
+}
+.product-right-block span:hover:after { color: #FF6800; }
+.product-right-block span.person:after { content: "A"; }
+.product-right-block span.readmore:after { content: "D"; }
+.product-right-block span.heartit:after { content: "h"; }
+
+.heart-count {
+    position: absolute; left: 5%; bottom: 5%;
+    padding-left: 40px;
+    line-height: 30px;
+    font-family: Georgia, serif; font-size: 20px; font-style: italic; color: #71AD53;
+}
+.heart-count:before {
+    content: "h";
+    position: absolute; left: 0; top: -3px;
+    width: 30px; height: 30px;
+    font-family: "heydings"; font-size: 30px; color: #63ceca;
+}
+

@@ -265,14 +265,16 @@ var Products = [
 
 $(function() {
     // Init Products
-    var $productPaneTemplate = $("#product-pane-template").remove().children();
-
-    var $panes = $();
+    var $carousel = $("#carousel"),
+        $productPaneTemplate = $("#product-pane-template").remove().attr("id", ""),
+        $productTemplate = $productPaneTemplate.children("div").remove().clone(),
+        $panes = $();
 
     $.each(Products, function(i, products) {
-        var $productPane = $('<li class="product-pane"></li>');
+        var $productPane = $productPaneTemplate.clone();
         $.each(products, function(i, product) {
-            var $product = $productPaneTemplate.clone();
+            var $product = $productTemplate.clone();
+            $product.attr("data-product-id", product.entity_id);
             $product.find(".product-image").attr("src", product.image);
             $product.find(".product-name").html(product.name);
             $product.find(".product-price").html(product.price);
@@ -282,12 +284,37 @@ $(function() {
 
         $panes = $panes.add($productPane);
     });
+    $carousel.children().children().eq(0).after($panes);
 
-    $("#carousel").children().children().eq(0).after($panes);
 
-
+    // Init carousel
     var carousel = new Carousel("#carousel");
     carousel.init();
+
+    // Product Events
+
+    // hear count click
+    $carousel.delegate(".heart-count", "click", function() {
+        carousel.showPane($carousel.find("li").size());
+    });
+
+    // image click
+    $carousel.delegate("img.product-image", "click", function() {
+        $(this).closest(".product-section").toggleClass("display-details");
+    });
+
+    // heart icon click
+    $carousel.delegate("span.heartit", "click", function() {
+        var $product = $(this).closest(".product-section");
+        console.log("Hearted Product ID: " + $product.data("product-id"));
+
+        // save product info
+        // get heart count
+        var heartCount = 1;
+
+        // update heart count els
+        $(".heart-count span").eq(0).html(heartCount);
+    });
 });
 
 
