@@ -272,7 +272,7 @@ div.display-details .product-right-block { opacity: 1; }
 #zoom-image {
     position: absolute; left: 50%; top: 50%; z-index: 500;
     height: 0; width: 0;
-    background-color: rgba(255, 255, 255, 0); background-position: center; background-size: contain; background-repeat: no-repeat;
+    background-color: #fff; background-position: center; background-size: contain; background-repeat: no-repeat;
     opacity: 0;
     transition: all .25s ease-in-out;
     -moz-transition: all .25s ease-in-out;
