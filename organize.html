@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <!--<![endif]-->
+<html>
+<head>
+    <title>Hammer.js</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+
+        body {
+            overflow:hidden;
+        }
+
+        h1 {
+            margin: 30px;
+            text-align: center;
+        }
+
+        .drag{
+            position: absolute;
+            left: 38%;
+            top: 25%;
+            border-radius: 50px;
+            width: 100px;
+            height: 100px;
+            right:100px;
+        }
+
+        .drag1 { background: #42d692; }
+        .drag2 { background: #4986e7; }
+        .drag3 { background: #d06b64; }
+        .drag4 { background: #cd74e6; }
+        .drag5 { background: #9fe1e7; }
+/****** ORGANIZE INTO TARGET PAGE *******/
+
+        #targets {
+            position: absolute; left: 0; bottom: 0;
+            width: 100%; height: 20%;
+        }
+
+        #targets a {
+            position: absolute;
+            width: 33%; height: 100%;
+        }
+        #targets a:before {
+            position: absolute; left: 0; top: 0;
+            width: 100%; height: 100%;
+            content: " ";
+        }
+        #targets a:after {
+            position: absolute; left: 0; bottom: 0;
+            width: 100%; height: 100%;
+            content: " ";
+            border-left: #333 1px solid;
+        }
+
+        #targets a:nth-child(1) { left: 0; }
+        #targets a:nth-child(2) { left: 50%; margin-left: -16.5%; }
+        #targets a:nth-child(3) { right: 0; }
+        #targets a span {
+            position: absolute; top: 50%; z-index: 2; margin-top: -9px;
+            width: 100%; height: 18px;
+            text-align: center;
+            font-size: 18px; font-weight: bold; line-height: 18px;
+        }
+        .counter {padding-top:25px;}
+    </style>
+</head>
+
+<body ng-app='heartApp' ng-controller='HeartController'>
+
+<h1>Organize Your Favorites!</h1>
+
+
+<!--div class="drag drag1"></div>
+<div class="drag drag2"></div>
+<div class="drag drag3"></div>
+<div class="drag drag4"></div>
+<div class="drag drag5"></div-->
+<!--div ng-repeat='item in items' class="drag">
+</div-->
+<div class="drag" style="background:url('http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg') no-repeat;"></div>
+<div class="drag" style="background:url('http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg') no-repeat;"></div>
+<div class="drag" style="background:url('http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg') no-repeat;"></div>
+<div class="drag" style="background:url('http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg') no-repeat;"></div>
+
+<div id="targets">
+    <a href="#">
+        <span>Wishlist It</span>
+        <span class="count-wishlist counter">0</span>
+    </a>
+    <a href="#">
+        <span>Email It</span>
+        <span class="count-email counter">0</span>
+    </a>
+    <a href="#">
+        <span>Forget It</span>
+        <span class="count-forget counter">0</span>
+    </a>
+</div>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="assets/js/modernizr.js"></script>
+    <script src="http://code.angularjs.org/1.0.0rc9/angular-1.0.0rc9.js"></script>
+    <script src="assets/js/jquery.hammer.min.js"></script>
+
+<script>
+
+    $(".drag")
+        .hammer({ drag_max_touches:0})
+        .on("touch drag", function(ev) {
+            var touches = ev.gesture.touches;
+
+            ev.gesture.preventDefault();
+
+            for(var t=0,len=touches.length; t<len; t++) {
+                var target = $(touches[t].target);
+                target.css({
+                    zIndex: 1337,
+                    left: touches[t].pageX-50,
+                    top: touches[t].pageY-50
+                });
+            }
+        })
+        .on("dragend", function(ev) {
+            var touches = ev.gesture.touches;
+            if (touches[0].pageY > 500) {
+                jQuery(this).fadeOut();    
+
+                if(touches[0].pageX <133) {
+                    var count = parseInt(jQuery('.count-wishlist').html());
+                    jQuery('.count-wishlist').text(count +1);
+                } else if(touches[0].pageX < 266) {
+                    var count = parseInt(jQuery('.count-email').html());
+                    jQuery('.count-email').text(count +1);
+                }
+                else { 
+                    var count = parseInt(jQuery('.count-forget').html());
+                    jQuery('.count-forget').text(count +1);
+                }
+        
+            }
+            
+        });
+
+function HeartController($scope, $http) {
+    $scope.items = [];
+    $scope.busy = false;
+    //$scope.after = '';
+    var counter = 2;
+
+    $scope.nextPage = function () {
+        for (var i = 0; i < 4; i++) {
+            $scope.items.push({
+                id: Products[i].entity_id,
+                name: Products[i].name,
+                price: Products[i].price,
+                image: Products[i].image,
+                count: counter
+            });
+            counter += 1;
+        }
+    };
+
+    $scope.select = function (item) {
+        if (this.clicked) {
+            this.clicked = false;
+        } else {
+            this.clicked = true;
+        }
+    };
+    $scope.heartadd = function (item) {
+        if (item.heart) {
+            item.heart = false;
+        } else {
+            item.heart = true;
+        }
+    }
+
+    $scope.heartcounter = function () {
+        var count = 0;
+        angular.forEach($scope.items, function (item) {
+            count += item.heart ? 1 : 0;
+        });
+        return count;
+    };
+
+
+    $scope.nextPage();
+};
+angular.module('heartApp', []);
+
+    var Products = new Array();
+    Products[0] = new Array();
+    Products[0].entity_id = "4380";
+    Products[0].name = "Moraley Flower Stackable Bands";
+    Products[0].meta_description = "Add style with delicate mixed metal flower stackable band rings from Stella & Dot. Find fashion rings, cocktail rings, vintage rings, bands & more.";
+    Products[0].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg";
+    Products[0].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg";
+    Products[0].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg";
+    Products[0].url_key = "moraley-flower-stackable-bands";
+    Products[0].url_path = "moraley-flower-stackable-bands.html";
+    Products[0].price = "39.0000";
+
+    Products[1] = new Array();
+    Products[1].entity_id = "4378";
+    Products[1].name = "Mary-Margaret Stone Ring";
+    Products[1].meta_title = "Turquoise Stone & Gold Cocktail Ring | Mary-Margaret Ring";
+    Products[1].meta_description = "Look stylish & on trend with a turquoise stone & gold cocktail ring from Stella & Dot. Find fashion rings, cocktail rings, vintage rings, bands & more.";
+    Products[1].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg";
+    Products[1].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg";
+    Products[1].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg";
+    Products[1].url_key = "mary-margaret-stone-ring";
+    Products[1].url_path = "mary-margaret-stone-ring.html";
+    Products[1].price = "39.0000";
+
+    Products[2] = new Array();
+    Products[2].entity_id = "608";
+    Products[2].name = "Camilla Ring ";
+    Products[2].meta_title = "Large Green Stone & Gold Cocktail Ring | Camilla Ring";
+    Products[2].meta_description = "Shop for an aventurine stone cocktail ring in an antique gold setting from Stella & Dot. Find fashion rings, cocktail rings, vintage rings, bands & more.";
+    Products[2].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg";
+    Products[2].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg";
+    Products[2].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg";
+    Products[2].url_key = "camilla-ring";
+    Products[2].url_path = "camilla-ring.html";
+    Products[2].price = "49.0000";
+
+    Products[3] = new Array();
+    Products[3].entity_id = "2321";
+    Products[3].name = "Soiree Trio Ring";
+    Products[3].meta_title = "Black Diamond, Glass & Crystal Cocktail Ring | Soiree Trio Ring";
+    Products[3].meta_description = "Stand out with a striking triple dome ring with mixed crystal pave balls by Stella & Dot. Find handbags, cross body bags, clutches, wristlets, pouches & more.";
+    Products[3].image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/image/450x682/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg";
+    Products[3].small_image = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/small_image/88x77/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg";
+    Products[3].thumbnail = "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg";
+    Products[3].url_key = "r115h";
+    Products[3].url_path = "r115h.html";
+    Products[3].price = "49.0000";
+
+        
+</script>
+<script src="assets/js/ga.js"></script>
+</body>
+</html>
