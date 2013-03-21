@@ -301,10 +301,10 @@ $(function() {
     });
 
     // image click
-    /*$carousel.delegate("img.product-image", "click", function() {
-        $(this).closest(".product-section").toggleClass("display-details");
-    });*/
     $carousel.delegate("img.product-image", "click", function() {
+        $(this).closest(".product-section").toggleClass("display-details");
+    });
+    $carousel.hammer().on("pinchin", "img.product-image", function() {
         var $image = $('<div id="zoom-image"></div>');
         $image.css("background-image", 'url(' + $(this).attr("src") + ')');
 
@@ -316,7 +316,7 @@ $(function() {
     });
 
     // image zoome out
-    $("body").delegate("#zoom-image", "click", function() {
+    $("body").hammer().on("tap", "#zoom-image", function(event) {
         var $image = $(this).removeClass("zoomed");
         window.setTimeout(function() {
             $image.remove();
