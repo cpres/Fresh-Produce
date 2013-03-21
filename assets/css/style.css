@@ -162,13 +162,21 @@ html, body, #carousel, #carousel ul, #carousel li {
     width: 200px;
     margin: -60px auto 0 auto;
     z-index: 10;
-    font-size:18px;
+    font-family: Georgia, serif;
     position:relative;
     transition: opacity .25s ease-in-out;
     -moz-transition: opacity .25s ease-in-out;
     -webkit-transition: opacity .25s ease-in-out;
 }
 div.display-details .title { opacity: 1; }
+.product-name {
+    display: block;
+    font-size: 20px; line-height: 24px; font-style: italic; color: #63ceca;
+}
+.product-price {
+    font-weight: bold; font-size: 16px; color: #71AD53;
+}
+
 .product-right-block {
     display: block; opacity: 0;
     width: 15%;

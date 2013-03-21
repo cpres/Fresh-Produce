@@ -218,7 +218,7 @@ var Products = [
             thumbnail: "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r146gs_moraley_flower_band_set.jpg",
             url_key: "moraley-flower-stackable-bands",
             url_path: "moraley-flower-stackable-bands.html",
-            price: "39.0000"
+            price: "$39"
         },
         {
             entity_id:  "4378",
@@ -230,7 +230,7 @@ var Products = [
             thumbnail:  "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r1425tu_mary-margaret_angled.jpg",
             url_key:  "mary-margaret-stone-ring",
             url_path:  "mary-margaret-stone-ring.html",
-            price:  "39.0000"
+            price:  "$39"
 
         }
     ],
@@ -245,7 +245,7 @@ var Products = [
             thumbnail:  "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r113_1.jpg",
             url_key:  "camilla-ring",
             url_path:  "camilla-ring.html",
-            price:  "49.0000"
+            price:  "$49"
         },
         {
             entity_id:  "2321",
@@ -257,7 +257,7 @@ var Products = [
             thumbnail:  "http://shop.dev02.stelladotdev.com/style/media/catalog/product/cache/0/thumbnail/75x75/9df78eab33525d08d6e5fb8d27136e95/r/1/r115h_1.jpg",
             url_key:  "r115h",
             url_path:  "r115h.html",
-            price:  "49.0000"
+            price:  "$49"
         }
     ]
 ];
@@ -310,7 +310,7 @@ $(function() {
 
         // save product info
         // get heart count
-        var heartCount = 1;
+        var heartCount = 1; // hard coded temporarily for example
 
         // update heart count els
         $(".heart-count span").eq(0).html(heartCount);
