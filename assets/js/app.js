@@ -328,11 +328,17 @@ $(function() {
     $carousel.delegate("span.heartit", "click", function() {
         var $product = $(this).closest(".product-section");
         console.log("Hearted Product ID: " + $product.data("product-id"));
+        var count = parseInt($(".heart-count span").html());
+        if ($product.hasClass('hearted')) {
+            var heartCount = count-1;
+            $product.removeClass('hearted');
+        } else {
+            var heartCount = count+1; // hard coded temporarily for example
+            $product.addClass('hearted');
+        }
 
         // save product info
         // get heart count
-        var count = parseInt($(".heart-count span").html());
-        var heartCount = count+1; // hard coded temporarily for example
 
         // update heart count els
         $(".heart-count span:first-of-type").html(heartCount);
