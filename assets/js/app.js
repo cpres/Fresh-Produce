@@ -304,15 +304,16 @@ $(function() {
     $carousel.delegate("img.product-image", "click", function() {
         $(this).closest(".product-section").toggleClass("display-details");
     });
-    $carousel.hammer().on("pinchin", "img.product-image", function() {
-        var $image = $('<div id="zoom-image"></div>');
-        $image.css("background-image", 'url(' + $(this).attr("src") + ')');
+    $carousel.hammer().on("pinchout", "img.product-image", function() {
+        if ($("#zoom-image").size() == 0) {
+            var $image = $('<div id="zoom-image"></div>');
+            $image.css("background-image", 'url(' + $(this).attr("src") + ')');
 
-        $image.appendTo("body");
-        window.setTimeout(function() {
-            $image.addClass("zoomed");
-        }, 10);
-
+            $image.appendTo("body");
+            window.setTimeout(function() {
+                $image.addClass("zoomed");
+            }, 10);
+        }
     });
 
     // image zoome out
