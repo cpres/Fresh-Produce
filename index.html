@@ -194,13 +194,12 @@
                 <p>This is a mobile optimized site, so please use swipes, taps, double taps, and pinches to explore.</p>
             </li>
             <li class="pane2">
-				<div id="product-holder">
 				    <div ng-repeat='item in items'>
 				    counter= {{item.count}}
 				        <div class="big-product product-section">
 				            <div class="product-left-block">&nbsp;</div>
 				            <div class="product-main-block">
-					            <div><img src="{{item.image}}" ng:click="select()" id="product-{{item.id}}" /> </div>
+					            <div style="background:url('{{item.image}}') no-repeat;height:350px" ng:click="select()" id="product-{{item.id}}" /> </div>
 					            <span class='title' ng:show='clicked' data-click="{{item.image}}">
 					                    {{item.name}}<br />
 					                    {{item.price}}
@@ -223,8 +222,8 @@
 				        
 				        <div ng-show='busy'>Loading data...</div>
 				    </div>
+
 				{{heartcounter()}} Hearted of {{items.length}}
-				</div>
             </li>
             <li class="pane3 fullimg">
                 <h2>3 circles</h2>
