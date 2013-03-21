@@ -151,6 +151,7 @@ function Carousel(element)
             case 'dragright':
             case 'dragleft':
                 // stick to the finger
+                
                 var pane_offset = -(100/pane_count)*current_pane;
                 var drag_offset = ((100/pane_width)*ev.gesture.deltaX) / pane_count;
 
@@ -159,6 +160,7 @@ function Carousel(element)
                     (current_pane == pane_count-1 && ev.gesture.direction == Hammer.DIRECTION_LEFT)) {
                     drag_offset *= .4;
                 }
+                ev.stopPropagation();
 
                 setContainerOffset(drag_offset + pane_offset);
                 break;
@@ -310,11 +312,64 @@ $(function() {
 
         // save product info
         // get heart count
-        var heartCount = 1; // hard coded temporarily for example
+        var count = parseInt($(".heart-count span").html());
+        var heartCount = count+1; // hard coded temporarily for example
 
         // update heart count els
         $(".heart-count span").eq(0).html(heartCount);
     });
 });
+/***** Organizer Section ******/
+$(".drag")
+    .hammer({ drag_max_touches:0})
+    .on("touch drag", function(ev) {
+        var touches = ev.gesture.touches;
+
+        ev.stopPropagation();
+        ev.gesture.preventDefault();
+
+        for(var t=0,len=touches.length; t<len; t++) {
+            var target = $(touches[t].target);
+            target.css({
+                zIndex: 1337,
+                left: touches[t].pageX-50,
+                top: touches[t].pageY-50
+            });
+        }
+    })
+    .on("dragend", function(ev) {
+        var touches = ev.gesture.touches;
+        var xWish = getOffset( document.getElementById('count-email') ).left; 
+        var xScreen = parseInt(jQuery('#carousel').width()); 
+        var screenCount = jQuery('.animate li').length - 1;
+
+        var xForget = getOffset( document.getElementById('count-forget') ).left; 
+        var xSlack = xScreen*screenCount;
+        var yWish = getOffset( document.getElementById('count-email') ).top; 
+        if ( touches[0].pageY > (yWish-50) ) {
+            jQuery(this).fadeOut();    
+            if((touches[0].pageX + xSlack) < xWish) {
+                var count = parseInt(jQuery('#count-wishlist').html());
+                jQuery('#count-wishlist').text(count +1);
+            } else if((touches[0].pageX + xSlack) < xForget) {
+                var count = parseInt(jQuery('#count-email').html());
+                jQuery('#count-email').text(count +1);
+            } else { 
+                var count = parseInt(jQuery('#count-forget').html());
+                jQuery('#count-forget').text(count +1);
+            }
+        }
+    });
+
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
 
 
