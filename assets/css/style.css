@@ -213,7 +213,7 @@ div.display-details .product-right-block { opacity: 1; }
 .product-right-block span.heartit:after { content: "h"; }
 
 .heart-count {
-    position: absolute; left: 5%; bottom: 5%;
+    position: absolute; left: 5%; top: 5%;
     padding-left: 40px;
     line-height: 30px;
     font-family: Georgia, serif; font-size: 20px; font-style: italic; color: #71AD53;
