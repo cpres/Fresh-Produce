@@ -165,14 +165,14 @@ function Carousel(element)
                 setContainerOffset(drag_offset + pane_offset);
                 break;
 
-            case 'pinchin' :
+            /*case 'pinchin' :
                 if (zoom)
                     self.showLarge(current_pane);
                 break;
 
             case 'pinchout':
                 self.showLarge(current_pane);
-                break;
+                break;*/
 
             case 'swipeleft':
                 self.next();
@@ -184,10 +184,10 @@ function Carousel(element)
                 ev.gesture.stopDetect();
                 break;
 
-            case 'tap':
+            /*case 'tap':
                 if (!zoom)
                     self.showClick(current_pane);
-                break;
+                break;*/
 
             case 'release':
                 // more then 50% moved, navigate
@@ -317,7 +317,7 @@ $(function() {
     });
 
     // image zoome out
-    $("body").hammer().on("tap", "#zoom-image", function(event) {
+    $("body").hammer().on("pinchin", "#zoom-image", function(event) {
         var $image = $(this).removeClass("zoomed");
         window.setTimeout(function() {
             $image.remove();
