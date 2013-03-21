@@ -92,7 +92,7 @@ html, body, #carousel, #carousel ul, #carousel li {
 #carousel li.pane5 { background: #9fe1e7; }
 #carousel li.pane6 { background: #FFF; }
 
-
+#carousel .product-pane { background: #fff; }
 
 
 /****** ORGANIZE INTO TARGET PAGE *******/
@@ -148,7 +148,7 @@ html, body, #carousel, #carousel ul, #carousel li {
     text-align:center;
     width: 200px;
     margin: -60px auto 0 auto;
-    display:block;
+    display:none;
     z-index: 10;
     font-size:18px;
     position:relative;
@@ -161,12 +161,7 @@ html, body, #carousel, #carousel ul, #carousel li {
 }
 .product-main-block {
     float:left;
-    width:70%;
-    display:block;
-}
-.product-left-block {
-    float:left;
-    width:15%;
+    width:70%; margin-left: 15%;
     display:block;
 }
 .product-right-block span {
